@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import kotlin.random.Random
 
 private const val TAG = "PhotoGalleryViewModel"
 
@@ -22,15 +25,23 @@ class PhotoGalleryViewModel :ViewModel() {
 
     init {
         viewModelScope.launch {
-
-            try {
-                val items = photoRepository.fetchPhotos()
+            try { // added date url here
+                val startDate = LocalDate.of(2022, 1, 1) // Set your start date
+                val endDate = LocalDate.now() // Set your end date
+                val randomDate = randomDate(startDate, endDate).toString() // Generate random date
+                val items = photoRepository.fetchPhotos(randomDate)
                 Log.d(TAG, "Items Received : $items")
                 _galleryItems.value = items
-            }catch (ex:Exception){
-
+            } catch (ex: Exception) {
                 Log.e(TAG, "Failed to fetch gallery items", ex)
             }
         }
+    }
+
+    // added random date function here
+    private fun randomDate(start: LocalDate, end: LocalDate): LocalDate {
+        val daysBetween = ChronoUnit.DAYS.between(start, end)
+        val randomDays = Random.nextLong(daysBetween + 1)
+        return start.plusDays(randomDays)
     }
 }

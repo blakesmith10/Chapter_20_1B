@@ -24,8 +24,8 @@ class PhotoRepository {
    // suspend fun fetchContents() = flickrApi.fetchContents()
 
    // suspend fun fetchPhotos() = flickrApi.fetchPhotos()
-    suspend fun fetchPhotos(): List<GalleryItem> = flickrApi.fetchPhotos().photos.galleryItems
+   // suspend fun fetchPhotos(): List<GalleryItem> = flickrApi.fetchPhotos().photos.galleryItems
 
-
+    // added new function to include the date in the fetchphotos
+   suspend fun fetchPhotos(date: String): List<GalleryItem> = flickrApi.fetchPhotos(date = date).photos.galleryItems
 }
-
